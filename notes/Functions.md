@@ -193,3 +193,6 @@ Array.prototype.calculate = function(operation) {
 }
 console.log(radiusArr.calculate(area))
 ```
+
+#### Difference between anonymous function and named functions
+![Difference Between Anonymous and Named functions](../assets/images/diff-anonymous-named-functions.png)
