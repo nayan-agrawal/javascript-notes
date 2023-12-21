@@ -81,3 +81,8 @@ Types of Error: Syntax, Reference, and Type.
  - Try using const wherever possible.
  - If not, use let, Avoid var.
  - Declare and initialize all variables with let to the top to avoid errors to shrink temporal dead zone window to zero.
+
+### Difference Between Let, const and var
+Following are some important differences between let, const and var
+
+![Difference between let, const and var](../assets/images/diff-let-const-var.png)
