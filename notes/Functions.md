@@ -3,7 +3,7 @@
 > Functions are heart ♥ of Javascript.
 
 ### Q: What is Function statement? 
-Below way of creating function are function statement.
+Declaring and defining a function is known as function statement also known as function declaration.
 ```js
 function a() {
   console.log("Hello");
@@ -33,10 +33,8 @@ var b = function() {
 }
 // Why? During mem creation phase a is created in memory and function assigned to a. But b is created like a variable (b:undefined) and until code reaches the function()  part, it is still undefined. So it cannot be called.
 ```
-### Q: What is Function Declaration?
-Other name for **function statement**.
 
-### Q: What is Anonymous Function?
+### Q: What is an Anonymous Function?
 A function without a name.
 ```js
 function () {
@@ -65,9 +63,8 @@ var b = function(param1, param2) { // labels/identifiers are parameters
 b(arg1, arg2); // arguments - values passed inside function call
 ```
 
-### Q: What is First Class Function aka First Class Citizens?
-We can pass functions inside a function as arguments and 
-/or return a function(HOF). These ability are altogether known as First class function. It is programming concept available in some other languages too.
+### Q: What is First Class Function a.k.a First Class Citizens?
+We can pass functions inside a function as arguments and or return a function(HOF). These ability are altogether known as First class function. It is programming concept available in some other languages too.
 ```js
 var b = function(param1) {
   console.log(param1); // prints " f() {} "
@@ -91,7 +88,7 @@ console.log(b()); //we log the entire fun within b.
 ```
 
 ### Arrow Functions
-**Arrow function** {()=>} is concise way of writing JavaScript functions in shorter way. Arrow functions were introduced in the ES6 version. They make our code more structured and readable.
+**Arrow function** {()=>} is way of writing JavaScript functions in shorter way. Arrow functions were introduced in the ES6 version. They make our code more structured and readable.
 
 Arrow functions are anonymous functions i.e. functions without a name but they are often assigned to any variable. They are also called **Lambda Functions**.
 
