@@ -7,17 +7,17 @@
      - Callback Hell
      - Inversion of control
 
-- Understanding of Bad part of callback is super important to learn Promise in next lecture.
+- Understanding of Bad part of callback is super important to learn Promises.
 
 > 💡 JavaScript is synchronous, single threaded language. It can Just do one thing at a time, it has just one call-stack and it can execute one thing at a time. Whatever code we give to Javascript will be quickly executed by Javascript engine, it does not wait.
 
 ```js
-console.log("Namaste");
-console.log("JavaScript");
-console.log("Season 2");
-// Namaste
-// JavaScript
-// Season 2
+console.log("Hello");
+console.log("World");
+console.log("of Programming");
+// Hello
+// World
+// of Programming
 
 // 💡 It is quickly printing because `Time, tide & Javascript waits for none.`
 ```
@@ -25,14 +25,14 @@ console.log("Season 2");
 _But what if we have to delay execution of any line, we could utilize callback, How?_
 
 ```js
-console.log("Namaste");
+console.log("Hello");
 setTimeout(function () {
-  console.log("JavaScript");
+  console.log("World");
 }, 5000);
-console.log("Season 2");
-// Namaste
-// Season 2
-// JavaScript
+console.log("of Programming");
+// Hello
+// of Programming
+// World
 
 // 💡 Here we are delaying the execution using callback approach of setTimeout.
 ```

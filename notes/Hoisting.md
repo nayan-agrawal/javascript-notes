@@ -4,11 +4,11 @@ Lets understand the concept of hoisting in relation with how javascript is execu
 
 Consider the below code snippet.
 ```
-getName(); // Namaste Javascript
+getName(); // Hello World
 console.log(x); // undefined
 var x = 7;
 function getName() {
- console.log("Namaste Javascript");
+ console.log("Hello World");
 }
 ```
 In numerous other programming languages, attempting to access something that hasn't been created or defined would typically result in an immediate error. However, in JavaScript, during the memory creation phase, it assigns 'undefined' and stores the function's content in its memory space. During execution, it carries out operations as requested. In this case, since execution happens line by line without prior compilation, the output will only display 'undefined' and not throw an error. This behavior is not considered an error. However, removing 'var x = 7;' would lead to an error. 
@@ -17,11 +17,11 @@ In numerous other programming languages, attempting to access something that has
 
 We've discovered that the execution context is established in two stages. Before the actual code execution begins, memory is allocated. For variables, this results in their initialization as 'undefined,' while for functions, the complete function code is stored in memory. For instance:
 ```
-getName(); // Namaste JavaScript
+getName(); // Hello World
 console.log(x); // Uncaught Reference: x is not defined.
-console.log(getName); // f getName(){ console.log("Namaste JavaScript); }
+console.log(getName); // f getName(){ console.log("Hello World"); }
 function getName(){
-    console.log("Namaste JavaScript");
+    console.log("Hello World");
 }
 ```
 
@@ -30,7 +30,7 @@ Now let's observe a different example and try to understand the output.
 getName(); // Uncaught TypeError: getName is not a function
 console.log(getName);
 var getName = function () {
-    console.log("Namaste JavaScript");
+    console.log("Hello World");
 }
 // The code won't execute as the first line itself throws an TypeError.
 ```
