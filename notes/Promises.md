@@ -24,17 +24,17 @@ createOrder(cart, function () {
 Q: How to fix the above issue?  
 _A: Using Promise._
 
-Now, we will make `createOrder` function return a promise and we will capture that `promise` into a `variable`
+Now, we will make `createOrder` function which returns a promise and we will capture that `promise` into a `variable`.
 
-Promise is nothing but we can assume it to be empty object with some data value in it, and this data value will hold whatever this `createOrder` function will return.
+Promise is nothing but an empty object with some data value in it, and this data value will hold whatever this `createOrder` function will return.
 
 Since `createOrder` function is an async function and we don't know how much time will it take to finish execution.
 
-So the moment `createOrder` will get executed, it will return you a `undefined` value. Let's say after 5 secs execution finished so now `orderId` is ready so, it will fill the `undefined` value with the `orderId`.
+So the moment `createOrder` will get executed, it will return you a `undefined` value. Let's say after 5 secs `createOrder` function is executed successfully and now `orderId` is ready so, it will fill the `undefined` value with the `orderId`.
 
 In short, When `createOrder` get executed, it immediately returns a `promise object` with `undefined` value. then javascript will continue to execute with other lines of code. After sometime when `createOrder` has finished execution and `orderId` is ready then that will `automatically` be assigned to our returned `promise` which was earlier `undefined`.
 
-Q: Question is how we will get to know `response` is ready?  
+Q: How we will get to know `response` is ready?  
 _A: So, we will attach a `callback` function to the `promise object` using `then` to get triggered automatically when `result` is ready._
 
 ```js
@@ -60,13 +60,13 @@ But with promise, we are attaching a callback function to a promiseObject.
 
 There is difference between these words, passing a function and attaching a function.
 
-Promise guarantee, it will callback the attached function once it has the fulfilled data. And it will call it only once. Just once.
+Promise guarantee, it will callback the attached function once it has the fulfilled data. And it will call it only once.
 
 Earlier we talked about promise are object with empty data but that's not entirely true, `Promise` are much more than that.
 
 Now let's understand and see a real promise object.
 
-fetch is a web-api which is utilized to make api call and it returns a promise.
+fetch is a web-api used to make API calls and it returns a promise.
 
 We will be calling public github api to fetch data
 https://api.github.com/users/alok722
@@ -375,238 +375,184 @@ createOrder(cart)
   })
 ```
 
+### Promise Methods in JavaScript
 
-## async await : ES6 Syntax of promises
+##### Promise.all() method
+This method is used to execute multiple asynchronous tasks simultaneously without having to wait for another task to finish.
 
-###
-Topics Covered
-- What is async?
-- What is await?
-- How async await works behind the scenes?
-- Example of using async/await
-- Error Handling
-- Interviews
-- Async await vs Promise.then/.catch
+Suppose we have three promises and all are resolved successfully:
 
-Q: What is async?  
-A: Async is a keyword that is used before a function to create a async function.
-
-Q: What is async function and how it is different from normal function?  
-```js
-// 💡 async function always returns a promise, even if I return a simple string from below function, async keyword will wrap it under Promise and then return.
-async function getData() {
-  return "Namaste JavaScript";
-}
-const dataPromise = getData();
-console.log(dataPromise); // Promise {<fulfilled>: 'Namaste JavaScript'}
-
-//❓How to extract data from above promise? One way is using promise .then
-dataPromise.then(res => console.log(res)); // Namaste JavaScript
 ```
-Another example where `async` function is returning a Promise
-```js
-const p = new Promise((resolve, reject) => {
-  resolve('Promise resolved value!!');
-})
-
-async function getData() {
-  return p;
-}
-// In above case, since we are already returning a promise async function would simply return that instead of wrapping with a new Promise.
-const dataPromise = getData();
-console.log(dataPromise); // Promise {<fulfilled>: 'Promise resolved value!!'}
-dataPromise.then(res => console.log(res)); // Promise resolved value!!
+const promise1 = new Promise((resolve, reject) => resolve('promise1 success'));
+const promise2 = new Promise((resolve, reject) => resolve('promise2 success'));
+const promise3 = new Promise((resolve, reject) => resolve('promise3 success'));
 ```
+Now, let's use the Promise.all method.
+`Promise.all` needs an array of promises as its argument.
 
-Q: How we can use `await` along with async function?  
-A: `async` and `await` combo is used to handle promises.
-
-But Question is how we used to handle promises earlier and why we even need async/await?
-
-```js
-const p = new Promise((resolve, reject) => {
-  resolve('Promise resolved value!!');
-})
-
-function getData() {
-  p.then(res => console.log(res));
-}
-
-getData(); // Promise resolved value!!
-
-//📌 Till now we have been using Promise.then/.catch to handle promise.
-// Now let's see how async await can help us and how it is different
-
-// The rule is we have to use keyword await in front of promise.
-async function handlePromise() {
-  const val = await p;
-  console.log(val);
-}
-handlePromise(); // Promise resolved value!!
 ```
-📌 `await` is a keyword that can only be used inside a `async` function.
-```js
-await function() {} // Syntax error: await is only valid under async function.
+Promise.all([promise1, promise2, promise3])
+  .then((result) => {
+    console.log('resolved', result); // resolved ["promise1 success", "promise2 success", "promise3 success"]
+  })
+  .catch((error) => {
+    console.log('rejected', error);
+  });
 ```
+As all the promises are resolved, result will be an array containing the results of the resolved promises.
+Now, what if any of the promises get rejected?
 
-Q: What makes `async`-`await` special?  
-A: Let's understand with one example where we will compare async-await way of resolving promise with older .then/.catch fashion. For that we will modify our promise `p`.
-```js
-const p = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve('Promise resolved value!!');
-  }, 3000);
-})
+```
+const promise1 = new Promise((resolve, reject) => resolve('promise1 success'));
+const promise2 = new Promise((resolve, reject) => reject('promise2 failure'));
+const promise3 = new Promise((resolve, reject) => resolve('promise3 success'));
 
-// Let's now compare with some modification:
+Promise.all([promise1, promise2, promise3])
+  .then((result) => {
+    console.log('resolved', result);
+  })
+  .catch((error) => {
+    console.log('rejected', error); // rejected promise2 failure
+  });
+```
+In the above code, promise2 is rejected so the catch handler will be executed, and in the case of Promise.all:
 
-// 📌 Promise.then/.catch way
-function getData() {
-  // JS engine will not wait for promise to be resolved
-  p.then(res => console.log(res));
-  console.log('Hello There!');
-}
+ - If one of the promises is rejected, the error will contain the error message of the failed promise (as in our case above)
+ - If multiple promises are rejected, the error will be the error message of the first failed promise.
 
-getData(); // First `Hello There!` would be printed and then after 3 secs 'Promise resolved value!!' will be printed.
-// Above happened as Javascript wait for none, so it will register this promise and take this callback function and register separately then js will move on and execute the following console and later once promise is resolved, following console will be printed.
+Note: Even though the intermediate promise gets rejected, all next promises will not be stopped from executing. They will all be executed – but only the first rejected promise value will be available in the error parameter of the catch block.
 
-//❓ Problem: Normally one used to get confused that JS will wait for promise to be resolved before executing following lines.
+#### Promise.race() method
+Consider again the three resolved promises:
 
-// 📌 async-wait way:
-async function handlePromise() {
-  // JS Engine will waiting for promise to resolve.
-  const val = await p;
-  console.log('Hello There!');
-  console.log(val);
-}
-handlePromise(); // This time `Hello There!` won't be printed immediately instead after 3 secs `Hello There!` will be printed followed by 'Promise resolved value!!'
-// 💡 So basically code was waiting at `await` line to get the promise resolve before moving on to next line.
+```
+const promise1 = new Promise((resolve, reject) => resolve('promise1 success'));
+const promise2 = new Promise((resolve, reject) => resolve('promise2 success'));
+const promise3 = new Promise((resolve, reject) => resolve('promise3 success'));
 
-// Above is the major difference between Promise.then/.catch vs async-await
+Promise.race([promise1, promise2, promise3])
+  .then((result) => {
+    console.log('resolved', result); // resolved promise1 success
+  })
+  .catch((error) => {
+    console.log('rejected', error);
+  });
+```
+As you can see here, as soon as the first promise gets resolved, the `Promise.race` method will return the result of that resolved promise.
 
-//🤓 Let's brainstorm more around async-await
-async function handlePromise() {
-  console.log('Hi');
-  const val = await p;
-  console.log('Hello There!');
-  console.log(val);
+Now, take a look at the below code:
 
-  const val2 = await p;
-  console.log('Hello There! 2');
-  console.log(val2);
-}
-handlePromise(); 
-// In above code example, will our program wait for 2 time or will it execute parallely.
-//📌 `Hi` printed instantly -> now code will wait for 3 secs -> After 3 secs both promises will be resolved so ('Hello There!' 'Promise resolved value!!' 'Hello There! 2' 'Promise resolved value!!') will get printed immediately.
+```
+const promise1 = new Promise((resolve, reject) => reject('promise1 failure'));
+const promise2 = new Promise((resolve, reject) => resolve('promise2 success'));
+const promise3 = new Promise((resolve, reject) => resolve('promise3 success'));
 
-// Let's create one promise and then resolve two different promise.
-const p2 = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve('Promise resolved value by p2!!');
-  }, 2000);
-})
-
-async function handlePromise() {
-  console.log('Hi');
-  const val = await p;
-  console.log('Hello There!');
-  console.log(val);
-
-  const val2 = await p2;
-  console.log('Hello There! 2');
-  console.log(val2);
-}
-handlePromise(); 
-// 📌 `Hi` printed instantly -> now code will wait for 3 secs -> After 3 secs both promises will be resolved so ('Hello There!' 'Promise resolved value!!' 'Hello There! 2' 'Promise resolved value by p2!!') will get printed immediately. So even though `p2` was resolved after 2 secs it had to wait for `p` to get resolved
-
-
-// Now let's reverse the order execution of promise and observe response.
-async function handlePromise() {
-  console.log('Hi');
-  const val = await p2;
-  console.log('Hello There!');
-  console.log(val);
-
-  const val2 = await p;
-  console.log('Hello There! 2');
-  console.log(val2);
-}
-handlePromise(); 
-// 📌 `Hi` printed instantly -> now code will wait for 2 secs -> After 2 secs ('Hello There!' 'Promise resolved value by p2!!') will get printed and in the subsequent second i.e. after 3 secs ('Hello There! 2' 'Promise resolved value!!') will get printed
+Promise.race([promise1, promise2, promise3])
+  .then((result) => {
+    console.log('resolved', result);
+  })
+  .catch((error) => {
+    console.log('rejected', error); // rejected promise1 failure
+  });
 ```
 
-Q: Question is Is program actually waiting or what is happening behind the scene?  
-A: As we know, Time, Tide and JS wait for none. And it's true. Over here it appears that JS engine is waiting but JS engine is not waiting over here. It has not occupied the call stack if that would have been the case our page may have got frozen. So JS engine is not waiting. So if it is not waiting then what it is doing behind the scene? Let's understand with below code snippet.
-```js
-const p1 = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve('Promise resolved value by p1!!');
-  }, 5000);
-})
+As you can see here, the first promise itself is rejected so the .catch handler will be executed.
+So when we use the Promise.race method, it will wait until the first promise gets resolved or rejected and then:
+ - If the first promise in the promise chain gets resolved, the .then handler will be executed and the result will be the result of the first resolved promise.
+ - If the first promise in the promise chain gets rejected, the .catch handler will be executed and the result will be the result of the first failed promise.
+ - If multiple promises are rejected, the .catch handler will be executed and the result will be the result of the first failed promise.
 
-const p2 = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve('Promise resolved value by p2!!');
-  }, 10000);
-})
 
-async function handlePromise() {
-  console.log('Hi');
-  debugger;
-  const val = await p;
-  console.log('Hello There!');
-  debugger;
-  console.log(val);
+#### Promise.allSettled() method
+This method is useful when you want to know the result of each task even though they are rejected.
 
-  const val2 = await p2;
-  console.log('Hello There! 2');
-  debugger;
-  console.log(val2);
-}
-handlePromise(); 
-// When this function is executed, it will go line by line as JS is synchronous single threaded language. Lets observe what is happening under call-stack. Above you can see we have set the break-points.
+Because in `Promise.all` and `Promise.race`, we get only the result of the first rejected promise and there is no way to get the result of other successful or failed promises.
 
-// call stack flow -> handlePromise() is pushed -> It will log `Hi` to console -> Next it sees we have await where promise is suppose to be resolved -> So will it wait for promise to resolve and block call stack? No -> thus handlePromise() execution get suspended and moved out of call stack -> So when JS sees await keyword it suspend the execution of function till promise is resolved -> So `p` will get resolved after 5 secs so handlePromise() will be pushed to call-stack again after 5 secs. -> But this time it will start executing from where it had left. -> Now it will log 'Hello There!' and 'Promise resolved value!!' -> then it will check whether `p2` is resolved or not -> It will find since `p2` will take 10 secs to resolve so the same above process will repeat -> execution will be suspended until promise is resolved.
+So using `Promise.allSettled` we can get the result of all the promises, even if they failed.
+Take a look at the below code:
 
-// 📌 Thus JS is not waiting, call stack is not getting blocked.
-
-// Moreover in above scenario what if p1 would be taking 10 secs and p2 5 secs -> even though p2 got resolved earlier but JS is synchronous single threaded language so it will first wait for p1 to be resolved and then will immediately execute all.
 ```
+const promise1 = new Promise((resolve, reject) => resolve('promise1 success'));
+const promise2 = new Promise((resolve, reject) => resolve('promise2 success'));
+const promise3 = new Promise((resolve, reject) => resolve('promise3 success'));
 
-### Real World example of async/await
+Promise.allSettled([promise1, promise2, promise3]).then((result) => {
+  console.log('resolved', result);
+});
 
-```js
-async function handlePromise() {
-  // fetch() => Response Object which as body as Readable stream => Response.json() is also a promise which when resolved => value
-  const data = await fetch('https://api.github.com/users/alok722');
-  const res = await data.json();
-  console.log(res);
-};
-handlePromise()
-```
-
-### Error Handling
-
-While we were using normal Promise we were using .catch to handle error, now in `async-await` we would be using `try-catch` block to handle error.
-
-```js
-async function handlePromise() {
-  try {
-    const data = await fetch('https://api.github.com/users/alok722');
-    const res = await data.json();
-    console.log(res);
-  } catch (err) {
-    console.log(err)
+/* output from `.then`:
+resolved [
+  {
+    "status": "fulfilled",
+    "value": "promise1 success"
+  },
+  {
+    "status": "fulfilled",
+    "value": "promise2 success"
+  },
+  {
+    "status": "fulfilled",
+    "value": "promise3 success"
   }
-};
-handlePromise()
-
-// In above whenever any error will occur the execution will move to catch block. One could try above with bad url which will result in error.
-
-// Other way of handling error:
-handlePromise().catch(err => console.log(err)); // this will work as handlePromise will return error promise in case of failure.
+]
+*/
 ```
 
-### Async await vs Promise.then/.catch
-What one should use? `async-await` is just a syntactic sugar around promise. Behind the scene `async-await` is just promise. So both are same, it's just `async-await` is new way of writing code. `async-await` solves few of the short-coming of Promise like `Promise Chaining`. `async-await` also increases the readability. So sort of it is always advisable to use `async-await.`
+As you can see, the Promise.allSettled method waits until all the promises are resolved or rejected and the result will contain the result of each promise.
 
+```
+const promise1 = new Promise((resolve, reject) => reject('promise1 failure'));
+const promise2 = new Promise((resolve, reject) => resolve('promise2 success'));
+const promise3 = new Promise((resolve, reject) => resolve('promise3 success'));
+
+Promise.allSettled([promise1, promise2, promise3]).then((result) => {
+  console.log('resolved', result);
+});
+
+/* output from `.then`:
+resolved [
+  {
+    "status": "rejected",
+    "reason": "promise1 failure"
+  },
+  {
+    "status": "fulfilled",
+    "value": "promise2 success"
+  },
+  {
+    "status": "fulfilled",
+    "value": "promise3 success"
+  }
+]
+*/
+```
+
+In the above case, even though the first promise is rejected, we get the result of all the promises inside the `.then` handler.
+
+```
+const promise1 = new Promise((resolve, reject) => reject('promise1 failure'));
+const promise2 = new Promise((resolve, reject) => reject('promise2 failure'));
+const promise3 = new Promise((resolve, reject) => reject('promise3 failure'));
+
+Promise.allSettled([promise1, promise2, promise3]).then((result) => {
+  console.log('resolved', result);
+});
+
+/* output from `.then`:
+ resolved [
+  {
+    "status": "rejected",
+    "reason": "promise1 failure"
+  },
+  {
+    "status": "rejected",
+    "reason": "promise2 failure"
+  },
+  {
+    "status": "rejected",
+    "reason": "promise3 failure"
+  }
+] 
+*/
+```
+Here, even though all the promises are rejected, still the `.then` handler will be executed and we get the result of each promise.
